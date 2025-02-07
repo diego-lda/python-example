@@ -22,10 +22,28 @@ def generate_report(df):
     report['summary_statistics'] = check_summary_statistics(df)
     return report
 
+def display_dataset_info(df):
+    info_buffer = []
+    df.info(buf=info_buffer)
+    info_str = '\n'.join(info_buffer)
+    
+    first_rows = df.head().to_string()
+    
+    return info_str, first_rows
+
 def save_report(report, file_path):
     with open(file_path, 'w') as f:
         f.write("Quality Assurance Report\n")
         f.write("========================\n\n")
+        
+        f.write("Dataset Information:\n")
+        info_str, first_rows = display_dataset_info(df)
+        f.write(info_str)
+        f.write("\n\n")
+        
+        f.write("First few rows of the dataset:\n")
+        f.write(first_rows)
+        f.write("\n\n")
         
         f.write("Missing Values:\n")
         f.write(report['missing_values'].to_string())
