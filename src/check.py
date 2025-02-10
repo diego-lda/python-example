@@ -1,5 +1,7 @@
 import pandas as pd
 import os
+import io
+
 
 def check_missing_values(df):
     missing_values = df.isnull().sum()
@@ -8,6 +10,8 @@ def check_missing_values(df):
 def check_duplicates(df):
     duplicate_rows = df[df.duplicated()]
     return duplicate_rows
+
+# Show an example of only checking a subset of variables for the duplicates (item_id and sale_price)
 
 def check_summary_statistics(df):
     summary_stats = df.describe(include='all')
@@ -23,9 +27,9 @@ def generate_report(df):
     return report
 
 def display_dataset_info(df):
-    info_buffer = []
+    info_buffer = io.StringIO()
     df.info(buf=info_buffer)
-    info_str = '\n'.join(info_buffer)
+    info_str = info_buffer.getvalue()
     
     first_rows = df.head().to_string()
     
