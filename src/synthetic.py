@@ -52,7 +52,7 @@ items_df = pd.DataFrame(items, columns=['item_id', 'item_name', 'item_weight', '
 
 # Table 3: Information of sales
 sales = []
-for i in range(1, 1001):
+for i in range(1, 100001):
     shop_id = random.choice(shops_df['shop_id'])
     item_id = random.choice(items_df['item_id'])
     sale_id = i

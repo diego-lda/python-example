@@ -11,7 +11,10 @@ def check_duplicates(df):
     duplicate_rows = df[df.duplicated()]
     return duplicate_rows
 
-# Show an example of only checking a subset of variables for the duplicates (item_id and sale_price)
+def check_duplicates_subset(df):
+    subset_columns = ['item_id', 'sale_price']
+    duplicate_rows = df[df.duplicated(subset=subset_columns)]
+    return duplicate_rows
 
 def check_summary_statistics(df):
     summary_stats = df.describe(include='all')
@@ -65,11 +68,12 @@ def save_report(report, file_path):
         f.write("\n")
 
 if __name__ == "__main__":
-    file_path = '/Users/diegolara/guidance/python-example/data/master_sales.csv'
+    file_path = '/Users/diegolara/guidance/live_example/python-example/data/master_sales.csv'
     
     if os.path.exists(file_path):
         df = pd.read_csv(file_path)
         report = generate_report(df)
-        save_report(report, '/Users/diegolara/guidance/python-example/data/quality_assurance_report.txt')
+        duplicates_subset = check_duplicates_subset(df)
+        save_report(report, '/Users/diegolara/guidance/live_example/python-example/data/quality_assurance_report.txt')
     else:
         print(f"File {file_path} does not exist.")

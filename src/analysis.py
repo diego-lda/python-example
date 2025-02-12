@@ -1,9 +1,10 @@
 import pandas as pd
 import folium
 from folium.plugins import HeatMap
+import seaborn as sns
 
 # Load the CSV file
-file_path = '/Users/diegolara/guidance/python-example/data/master_sales.csv'
+file_path = '/Users/diegolara/guidance/live_example/python-example/data/master_sales.csv'
 df = pd.read_csv(file_path)
 
 # Perform some interesting analysis
@@ -42,11 +43,19 @@ m = folium.Map(location=map_center, zoom_start=6)
 heat_data = [
     [row['shop_latitude'], row['shop_longitude'], row['sale_price']]
     for index, row in df.iterrows()
-    if pd.notnull(row['shop_latitude']) and pd.notnull(row['shop_longitude'])
+    if pd.notnull(row['shop_latitude']) and pd.notnull(row['buyer_age'])
 ]
 
 # Add a heatmap layer to the map
 HeatMap(heat_data, radius=15, max_zoom=10).add_to(m)
+
+# Plotting buyers age against sale payment using a violin plot
+plt.figure(figsize=(10, 6))
+sns.violinplot(x='sale_payment', y='shop_hours_start', data=df, palette=['yellow', 'green'])
+plt.title('Distribution of Sale Payments by Buyer Age')
+plt.xlabel('Buyer Age')
+plt.ylabel('Sale Payment')
+plt.show()
 
 # Save the map to an HTML file and provide instructions to view it
 m.save("data/sales_heatmap.html")
